@@ -27,8 +27,8 @@ providers:
     input_mode: "stdin"
   claude:
     output_id: REVIEW_EXTERNAL_2
-    command: "claude -p \"{prompt_text}\" --output-format json"
-    input_mode: "arg"
+    command: "claude -p --output-format json --dangerously-skip-permissions"
+    input_mode: "stdin"
 ```
 
 Supported placeholders:
@@ -40,7 +40,7 @@ Supported placeholders:
 Input modes:
 
 - `stdin`: send resolved prompt via standard input (used for Gemini default)
-- `arg`: inject prompt via `{prompt_text}` in command string (used for Claude default)
+- `arg`: inject prompt via `{prompt_text}` in command string
 
 ## Run
 

@@ -1,0 +1,70 @@
+# External Review (gemini)
+
+- Generated at: 2026-02-17T01:41:49+00:00
+- Command: `gemini --output-format json`
+- Input mode: `stdin`
+- Exit code: 0
+- Raw file: `REVIEW_EXTERNAL_1.raw.txt`
+- Raw SHA256: `58dd0f1b193ab25bdc32d525b103b8902cf3c3245f2184dcfd34a04df24b45e0`
+
+## Raw Output
+
+```text
+{
+  "session_id": "c9e38d3a-8c02-4bb3-a051-f87970bd5f26",
+  "response": "### Summary\n\nThe Phase 1 design for PaperTA establishes a deterministic, auditable pipeline for document ingestion and grounded summarization. The architecture prioritizes evidence-linking through content-addressed chunking and enforces a \"fail-closed\" mechanism for unsupported claims. The alignment between the ADR, Runtime Contract, and Acceptance Checklist is exceptionally high, with all functional requirements and failure modes explicitly mapped to specific test cases.\n\n### Findings\n\n#### MINOR: Ambiguity in Text Normalization Rules\nThe requirement for \"deterministic text normalization\" is central to the stability of Chunk IDs, yet the specific normalization steps are not defined.\n- **Evidence**: ADR-001 states: `1. DocumentIngestionService for deterministic text normalization and structural chunking.`\n- **Evidence**: PHASE1 Runtime Contract states: `2. Text is normalized deterministically.`\n- **Impact**: Without a strict definition (e.g., case folding, whitespace stripping, Unicode normalization), different environment configurations or library versions could produce divergent Chunk IDs, breaking the \"Auditability\" non-functional requirement.\n\n#### NIT: Hash Collision Risk from Truncation\nThe Chunk ID generation truncates the SHA256 hash to 16 characters.\n- **Evidence**: ADR-001 and Contract both specify: `chunk_id = sha256(\"{paper_id}|{section}|{normalized_chunk_text}\")[:16]`\n- **Impact**: While 16 hex characters (64-bit entropy) are sufficient for a single-paper scope, this truncation increases collision risk if the system scales to larger corpora in later phases.\n\n#### NIT: Definition of Paragraph-Level Chunking\nThe granularity is defined as \"paragraph-level,\" but the delimiter is not specified.\n- **Evidence**: ADR-001 states: `2. Chunk granularity is paragraph-level within each section.`\n- **Impact**: Variations in document formatting (e.g., single vs. double newline) could lead to inconsistent chunking if the implementation logic is not standardized across the ingestion service.\n\n---\n\n### Open Questions\n\n1. **Normalization Logic**: What specific transformations are included in the \"normalization\" process to ensure cross-platform determinism?\n2. **Overlap Score Definition**: How is the \"overlap score\" for lexical retrieval calculated (e.g., raw token count, Jaccard similarity, or BM25 baseline)? This affects the ranking verification in test `T-RETRIEVE-UNIT-001`.\n3. **Delimiter Handling**: Does the ingestion service treat `|` as a reserved character in `paper_id` or `section` names to prevent potential collision in the hash input string?\n\n---\n\n### Final Verdict: PASS\n\nNo critical findings. The Phase 1 artifacts provide a solid foundation for a verifiable vertical slice. The traceability from ADR decisions to the Runtime Contract and finally to the Three-Test Rule matrix in the Checklist is excellent. Provided the open questions regarding normalization and lexical scoring are addressed during implementation, the system should meet its goals of determinism and groundedness.",
+  "stats": {
+    "models": {
+      "gemini-2.5-flash-lite": {
+        "api": {
+          "totalRequests": 1,
+          "totalErrors": 0,
+          "totalLatencyMs": 2752
+        },
+        "tokens": {
+          "input": 4442,
+          "prompt": 4442,
+          "candidates": 97,
+          "total": 4910,
+          "cached": 0,
+          "thoughts": 371,
+          "tool": 0
+        }
+      },
+      "gemini-3-flash-preview": {
+        "api": {
+          "totalRequests": 1,
+          "totalErrors": 0,
+          "totalLatencyMs": 21038
+        },
+        "tokens": {
+          "input": 8467,
+          "prompt": 8467,
+          "candidates": 637,
+          "total": 11935,
+          "cached": 0,
+          "thoughts": 2831,
+          "tool": 0
+        }
+      }
+    },
+    "tools": {
+      "totalCalls": 0,
+      "totalSuccess": 0,
+      "totalFail": 0,
+      "totalDurationMs": 0,
+      "totalDecisions": {
+        "accept": 0,
+        "reject": 0,
+        "modify": 0,
+        "auto_accept": 0
+      },
+      "byName": {}
+    },
+    "files": {
+      "totalLinesAdded": 0,
+      "totalLinesRemoved": 0
+    }
+  }
+}
+```

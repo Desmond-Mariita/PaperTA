@@ -8,3 +8,5 @@
   - checklist verification script
   - phase report generator
   - GitHub phase-gate CI workflows
+- Phase 1 started - Loop 1 (Design) on branch `phase-1-loop-1-design`.
+- Phase 1 Loop 1 (Design) completed; contract and checklist frozen after internal and external review remediation.
