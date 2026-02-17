@@ -192,9 +192,119 @@ _CSS_DARK = """
   padding-bottom: 2rem;
 }
 
-/* Dark mode overrides */
+/* Dark mode -- global surfaces */
 .stApp { background-color: #0f172a; color: #e2e8f0; }
+header[data-testid="stHeader"] { background-color: #0f172a; }
 section[data-testid="stSidebar"] { background-color: #1e293b; }
+section[data-testid="stSidebar"] [data-testid="stSidebarContent"] { background-color: #1e293b; }
+
+/* Dark mode -- main content & widget containers */
+.stApp [data-testid="stMainBlockContainer"],
+.stApp [data-testid="stVerticalBlock"],
+.stApp [data-testid="stHorizontalBlock"],
+.stApp .block-container {
+  background-color: transparent;
+  color: #e2e8f0;
+}
+
+/* Dark mode -- tabs */
+.stApp .stTabs [data-baseweb="tab-list"] { background-color: transparent; }
+.stApp .stTabs [data-baseweb="tab-panel"] { background-color: transparent; }
+.stApp .stTabs [data-baseweb="tab"] { color: #94a3b8; }
+.stApp .stTabs [aria-selected="true"] { color: #60a5fa; }
+
+/* Dark mode -- inputs, selects, text areas, file uploader */
+.stApp [data-baseweb="select"] > div,
+.stApp [data-baseweb="input"] > div,
+.stApp [data-baseweb="base-input"],
+.stApp [data-baseweb="textarea"] > div {
+  background-color: #1e293b;
+  color: #e2e8f0;
+  border-color: #374151;
+}
+.stApp [data-testid="stFileUploader"],
+.stApp [data-testid="stFileUploaderDropzone"] {
+  background-color: #1e293b;
+  border-color: #374151;
+  color: #e2e8f0;
+}
+.stApp [data-testid="stFileUploaderDropzone"] button,
+.stApp [data-testid="stFileUploaderDropzone"] button:hover {
+  background-color: #334155;
+  color: #e2e8f0;
+  border-color: #475569;
+}
+
+/* Dark mode -- expanders */
+.stApp [data-testid="stExpander"] {
+  background-color: #1e293b;
+  border-color: #374151;
+}
+.stApp [data-testid="stExpander"] details {
+  background-color: #1e293b;
+  border-color: #374151;
+}
+.stApp [data-testid="stExpander"] summary {
+  color: #e2e8f0;
+}
+
+/* Dark mode -- buttons */
+.stApp .stButton > button {
+  background-color: #1e40af;
+  color: #e2e8f0;
+  border-color: #2563eb;
+}
+.stApp .stButton > button:hover {
+  background-color: #1d4ed8;
+  border-color: #3b82f6;
+}
+.stApp .stDownloadButton > button {
+  background-color: #1e293b;
+  color: #e2e8f0;
+  border-color: #374151;
+}
+
+/* Dark mode -- slider */
+.stApp [data-testid="stSlider"] label,
+.stApp [data-testid="stSlider"] [data-testid="stTickBarMin"],
+.stApp [data-testid="stSlider"] [data-testid="stTickBarMax"] {
+  color: #94a3b8;
+}
+
+/* Dark mode -- text colors */
+.stApp h1, .stApp h2, .stApp h3, .stApp h4 { color: #f1f5f9; }
+.stApp p, .stApp li, .stApp span, .stApp label, .stApp div { color: #e2e8f0; }
+.stApp [data-testid="stCaptionContainer"] { color: #94a3b8; }
+.stApp .stMarkdown { color: #e2e8f0; }
+.stApp code { background-color: #1e293b; color: #e2e8f0; }
+.stApp pre { background-color: #1e293b; }
+
+/* Dark mode -- selectbox label text */
+.stApp .stSelectbox label,
+.stApp .stTextInput label,
+.stApp .stTextArea label,
+.stApp .stFileUploader label {
+  color: #cbd5e1;
+}
+
+/* Dark mode -- JSON viewer */
+.stApp [data-testid="stJson"] { background-color: #1e293b; }
+
+/* Dark mode -- alert boxes */
+.stApp [data-testid="stAlert"] { background-color: #1e293b; border-color: #374151; }
+
+/* Dark mode -- horizontal rule */
+.stApp hr { border-color: #374151; }
+
+/* Dark mode -- sidebar text */
+section[data-testid="stSidebar"] p,
+section[data-testid="stSidebar"] span,
+section[data-testid="stSidebar"] label,
+section[data-testid="stSidebar"] h1,
+section[data-testid="stSidebar"] h2,
+section[data-testid="stSidebar"] h3 {
+  color: #e2e8f0;
+}
 
 /* Chips */
 .chip {
