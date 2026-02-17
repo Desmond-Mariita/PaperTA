@@ -1,0 +1,23 @@
+phase: N
+name: "<phase name>"
+checks:
+  - id: FUNC-001
+    requirement: "Functional requirement implemented"
+    evidence:
+      type: test
+      path: "tests/"
+  - id: TEST-001
+    requirement: "Unit, integration, and negative tests exist"
+    evidence:
+      type: test_matrix
+      path: "tests/"
+  - id: DOC-001
+    requirement: "Required docs updated"
+    evidence:
+      type: file
+      path: "docs/"
+  - id: REVIEW-001
+    requirement: "External reviews addressed"
+    evidence:
+      type: file
+      path: "docs/reviews/phase{N}/build/VERDICT.md"
