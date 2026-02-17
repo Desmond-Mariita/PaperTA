@@ -16,6 +16,13 @@ venv/
 # Reports/artifacts
 reports/
 
+# Build artifacts
+*.egg-info/
+
+# Research paper uploads & screenshots
+*.pdf
+*.png
+
 # OS/editor
 .DS_Store
 .idea/

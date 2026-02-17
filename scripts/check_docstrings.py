@@ -55,7 +55,7 @@ def _check_google_docstring(node: ast.FunctionDef) -> tuple[bool, str]:
     lowered = doc.lower()
     if _get_non_self_args(node) and "args:" not in lowered:
         return False, "missing 'Args:' section"
-    if _has_non_none_return(node) and "returns:" not in lowered:
+    if _has_non_none_return(node) and "returns:" not in lowered and "yields:" not in lowered:
         return False, "missing 'Returns:' section"
     return True, ""
 
