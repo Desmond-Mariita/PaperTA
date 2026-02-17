@@ -9,6 +9,15 @@ NOT_STATED = "Not stated in the paper."
 
 
 def _snippet(text: str, max_len: int = 120) -> str:
+    """Render bounded-length snippet for bullet text.
+
+    Args:
+        text: Source text.
+        max_len: Maximum output length.
+
+    Returns:
+        Snippet string with ellipsis when truncated.
+    """
     if len(text) <= max_len:
         return text
     return text[: max_len - 3].rstrip() + "..."
@@ -17,7 +26,19 @@ def _snippet(text: str, max_len: int = 120) -> str:
 def generate_summary(
     ingested_paper: IngestedPaper, retrieval_result: RetrievalResult, mode: str = "summary"
 ) -> GroundedSummary:
-    """Generate a deterministic grounded summary from retrieval hits."""
+    """Generate deterministic grounded summary from retrieval hits.
+
+    Args:
+        ingested_paper: Source paper corpus used for citation validation.
+        retrieval_result: Ranked retrieval hits.
+        mode: Summary mode. Phase 1 supports only `summary`.
+
+    Returns:
+        Grounded summary artifact with bullet citations.
+
+    Raises:
+        ValueError: If mode is invalid or retrieval references unknown chunk IDs.
+    """
     if mode != "summary":
         raise ValueError("mode must be 'summary' in phase 1")
 

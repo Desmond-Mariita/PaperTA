@@ -34,6 +34,7 @@ make gate-build PHASE=1
 make verify-reviews PHASE=1 LOOP=design
 make run-external PHASE=1 LOOP=design
 make verify-external PHASE=1 LOOP=design
+make check-docstrings PHASE=1
 make verify-checklist PHASE=1
 make phase-report PHASE=1 LOOP=design
 ```

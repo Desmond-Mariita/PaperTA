@@ -17,7 +17,21 @@ def run_phase1_pipeline(
     mode: str = "summary",
     top_k: int = 5,
 ) -> PipelineResult:
-    """Execute deterministic ingestion -> retrieval -> grounded summary pipeline."""
+    """Execute deterministic ingestion, retrieval, and grounded summary.
+
+    Args:
+        paper_id: Paper identifier.
+        sections: Ordered section inputs.
+        query: User query.
+        mode: Pipeline mode. Phase 1 supports only `summary`.
+        top_k: Retrieval result count limit.
+
+    Returns:
+        End-to-end pipeline result with observability metadata.
+
+    Raises:
+        ValueError: If mode is invalid or upstream services reject inputs.
+    """
     if mode != "summary":
         raise ValueError("invalid mode")
 

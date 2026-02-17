@@ -105,6 +105,7 @@ Before coding:
 ### 4.2 Implementation Requirements
 
 Implement only within frozen contract scope.
+All public functions/classes must include Google-style docstrings.
 
 ### 4.3 Three-Test Rule (Mandatory)
 

@@ -11,11 +11,31 @@ _TOKEN_RE = re.compile(r"[a-z0-9]+")
 
 
 def _tokenize(text: str) -> set[str]:
+    """Tokenize text into lowercase alphanumeric terms.
+
+    Args:
+        text: Input text.
+
+    Returns:
+        Set of unique tokens.
+    """
     return set(_TOKEN_RE.findall(text.lower()))
 
 
 def retrieve(query: str, ingested_paper: IngestedPaper, top_k: int) -> RetrievalResult:
-    """Retrieve top-k chunks by lexical token overlap score."""
+    """Retrieve top-k chunks by lexical token overlap score.
+
+    Args:
+        query: User query string.
+        ingested_paper: Ingested paper corpus.
+        top_k: Maximum number of retrieval hits to return.
+
+    Returns:
+        Retrieval result with ranked hits.
+
+    Raises:
+        ValueError: If query is empty or top_k is not positive.
+    """
     if not query.strip():
         raise ValueError("query must be non-empty")
     if top_k <= 0:

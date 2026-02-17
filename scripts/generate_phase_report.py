@@ -41,6 +41,7 @@ def main() -> None:
 
     status = {
         "phase_gate": "FAIL",
+        "guidelines": "FAIL",
         "internal_reviews": "FAIL",
         "external_reviews": "FAIL",
         "checklist": "SKIP",
@@ -51,6 +52,19 @@ def main() -> None:
     rc, out = _run(["python3", "scripts/phase_gate.py", "--phase", str(args.phase), "--loop", args.loop])
     status["phase_gate"] = "PASS" if rc == 0 else "FAIL"
     details["phase_gate_output"] = out
+
+    rc, out = _run(
+        [
+            "python3",
+            "scripts/check_docstrings.py",
+            "--paths",
+            "src/paperta",
+            "--output",
+            str(report_dir / "guidelines_report.json"),
+        ]
+    )
+    status["guidelines"] = "PASS" if rc == 0 else "FAIL"
+    details["guidelines_output"] = out
 
     rc, out = _run(
         ["python3", "scripts/verify_internal_reviews.py", "--phase", str(args.phase), "--loop", args.loop]
@@ -86,7 +100,7 @@ def main() -> None:
         status["pytest"] = "PASS" if rc == 0 else "FAIL"
 
     overall = "PASS"
-    required = ["phase_gate", "internal_reviews", "external_reviews"]
+    required = ["phase_gate", "guidelines", "internal_reviews", "external_reviews"]
     for key in required:
         if status[key] != "PASS":
             overall = "FAIL"

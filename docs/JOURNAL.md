@@ -13,3 +13,4 @@
 - Phase 1 started - Loop 2 (Build) on branch `phase-1-loop-2-build`.
 - Phase 1 Loop 2 (Build) passed gates: internal review PASS, external provenance PASS, checklist PASS (24/24), pytest PASS (13).
 - Phase 1 completed end-to-end.
+- Post-phase hardening: added MedInsight-style Google docstring enforcement and CI gate for `src/paperta`.

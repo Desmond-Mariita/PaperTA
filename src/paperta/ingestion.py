@@ -14,17 +14,46 @@ _PARAGRAPH_SPLIT_RE = re.compile(r"\n\s*\n+")
 
 
 def _normalize_text(text: str) -> str:
+    """Normalize whitespace deterministically.
+
+    Args:
+        text: Input text segment.
+
+    Returns:
+        Normalized single-space text.
+    """
     stripped = text.strip()
     return _TOKEN_SPACE_RE.sub(" ", stripped)
 
 
 def _chunk_id(paper_id: str, section: str, chunk_text: str) -> str:
+    """Build stable content-addressed chunk ID.
+
+    Args:
+        paper_id: Paper identifier.
+        section: Section label.
+        chunk_text: Normalized chunk text.
+
+    Returns:
+        Hex-encoded deterministic chunk ID prefix.
+    """
     payload = f"{paper_id}|{section}|{chunk_text}".encode("utf-8")
     return hashlib.sha256(payload).hexdigest()[:16]
 
 
 def ingest_document(paper_id: str, sections: Sequence[SectionInput]) -> IngestedPaper:
-    """Ingest paper sections into deterministic paragraph chunks."""
+    """Ingest paper sections into deterministic paragraph chunks.
+
+    Args:
+        paper_id: Paper identifier.
+        sections: Ordered section inputs.
+
+    Returns:
+        Immutable ingested paper artifact with deterministic chunks.
+
+    Raises:
+        ValueError: If inputs are invalid or paper content is empty.
+    """
     if not paper_id.strip():
         raise ValueError("paper_id must be non-empty")
     if not sections:
