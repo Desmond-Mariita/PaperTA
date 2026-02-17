@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import glob
 import os
+import subprocess
 import sys
 from typing import List
 
@@ -59,6 +60,26 @@ def validate_design(phase: int) -> List[str]:
     if not _existing_non_empty("docs/JOURNAL.md"):
         errors.append("Missing or empty docs/JOURNAL.md")
 
+    # External review provenance must validate.
+    proc = subprocess.run(
+        [
+            "python3",
+            "scripts/verify_external_reviews.py",
+            "--phase",
+            str(phase),
+            "--loop",
+            "design",
+        ],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    if proc.returncode != 0:
+        errors.append("External review provenance verification failed for design loop.")
+        out = (proc.stdout or "").strip()
+        if out:
+            errors.append(out)
+
     return errors
 
 
@@ -83,6 +104,25 @@ def validate_build(phase: int) -> List[str]:
     for path in ["docs/JOURNAL.md", "docs/ROADMAP_SUMMARY.md", "docs/GIT.md"]:
         if not _existing_non_empty(path):
             errors.append(f"Missing or empty required file: {path}")
+
+    proc = subprocess.run(
+        [
+            "python3",
+            "scripts/verify_external_reviews.py",
+            "--phase",
+            str(phase),
+            "--loop",
+            "build",
+        ],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    if proc.returncode != 0:
+        errors.append("External review provenance verification failed for build loop.")
+        out = (proc.stdout or "").strip()
+        if out:
+            errors.append(out)
 
     return errors
 

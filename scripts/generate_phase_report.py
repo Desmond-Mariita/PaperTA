@@ -39,7 +39,13 @@ def main() -> None:
     report_dir = Path(f"reports/phase{args.phase}")
     report_dir.mkdir(parents=True, exist_ok=True)
 
-    status = {"phase_gate": "FAIL", "internal_reviews": "FAIL", "checklist": "SKIP", "pytest": "SKIP"}
+    status = {
+        "phase_gate": "FAIL",
+        "internal_reviews": "FAIL",
+        "external_reviews": "FAIL",
+        "checklist": "SKIP",
+        "pytest": "SKIP",
+    }
     details: dict[str, str | dict[str, int]] = {}
 
     rc, out = _run(["python3", "scripts/phase_gate.py", "--phase", str(args.phase), "--loop", args.loop])
@@ -51,6 +57,12 @@ def main() -> None:
     )
     status["internal_reviews"] = "PASS" if rc == 0 else "FAIL"
     details["internal_review_output"] = out
+
+    rc, out = _run(
+        ["python3", "scripts/verify_external_reviews.py", "--phase", str(args.phase), "--loop", args.loop]
+    )
+    status["external_reviews"] = "PASS" if rc == 0 else "FAIL"
+    details["external_review_output"] = out
 
     checklist = Path(f"docs/checklists/PHASE{args.phase}_ACCEPTANCE_CHECKLIST.yaml")
     if checklist.exists():
@@ -74,7 +86,7 @@ def main() -> None:
         status["pytest"] = "PASS" if rc == 0 else "FAIL"
 
     overall = "PASS"
-    required = ["phase_gate", "internal_reviews"]
+    required = ["phase_gate", "internal_reviews", "external_reviews"]
     for key in required:
         if status[key] != "PASS":
             overall = "FAIL"

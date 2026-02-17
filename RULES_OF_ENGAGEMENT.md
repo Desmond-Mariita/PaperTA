@@ -65,12 +65,18 @@ Rules:
 
 ### 3.3 External Design Review Stop Point
 
-After internal design review completion, stop and wait for human-provided external reviews:
+After internal design review completion, stop and run headless external review commands. Required artifacts:
 
 - `docs/reviews/phase{N}/design/REVIEW_EXTERNAL_1.md`
 - `docs/reviews/phase{N}/design/REVIEW_EXTERNAL_2.md`
+- `docs/reviews/phase{N}/design/REVIEW_EXTERNAL_1.raw.txt`
+- `docs/reviews/phase{N}/design/REVIEW_EXTERNAL_2.raw.txt`
+- `docs/reviews/phase{N}/design/REVIEW_EXTERNAL_1.raw.sha256`
+- `docs/reviews/phase{N}/design/REVIEW_EXTERNAL_2.raw.sha256`
+- `docs/reviews/phase{N}/design/REVIEW_EXTERNAL_1.meta.json`
+- `docs/reviews/phase{N}/design/REVIEW_EXTERNAL_2.meta.json`
 
-Do not fabricate external reviews.
+External reviews must come from real CLI execution (Gemini/Claude), never simulated text.
 
 ### 3.4 Design Freeze
 
@@ -130,10 +136,16 @@ Rules:
 
 ### 4.5 External Build Review Stop Point
 
-Stop for human-provided external review files:
+Stop and run headless external review commands. Required artifacts:
 
 - `docs/reviews/phase{N}/build/REVIEW_EXTERNAL_1.md`
 - `docs/reviews/phase{N}/build/REVIEW_EXTERNAL_2.md`
+- `docs/reviews/phase{N}/build/REVIEW_EXTERNAL_1.raw.txt`
+- `docs/reviews/phase{N}/build/REVIEW_EXTERNAL_2.raw.txt`
+- `docs/reviews/phase{N}/build/REVIEW_EXTERNAL_1.raw.sha256`
+- `docs/reviews/phase{N}/build/REVIEW_EXTERNAL_2.raw.sha256`
+- `docs/reviews/phase{N}/build/REVIEW_EXTERNAL_1.meta.json`
+- `docs/reviews/phase{N}/build/REVIEW_EXTERNAL_2.meta.json`
 
 Then produce:
 
@@ -151,6 +163,8 @@ Before merge, all must pass:
    - `docs/GIT.md`
 4. Gate checker passes:
    - `python3 scripts/phase_gate.py --phase N --loop build`
+5. External provenance check passes:
+   - `python3 scripts/verify_external_reviews.py --phase N --loop build`
 
 If gate fails, merge is blocked.
 
@@ -209,7 +223,7 @@ Enforcement mechanisms:
 2. Mechanical gate: `scripts/phase_gate.py`.
 3. Optional CI gate: run `phase_gate.py` in pull-request checks.
 
-If any required artifact is missing or empty, gate fails.
+If any required artifact is missing/empty, hash mismatched, or provider metadata is invalid, gate fails.
 
 ---
 

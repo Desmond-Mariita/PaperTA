@@ -13,11 +13,13 @@
 ## 2. Design Gate
 
 1. Run internal design reviews and save all files.
-2. Stop for external reviews.
+2. Run headless external reviews:
+   - `make run-external PHASE={N} LOOP=design`
 3. Address findings.
 4. Run:
    - `make gate-design PHASE={N}`
    - `make verify-reviews PHASE={N} LOOP=design`
+   - `make verify-external PHASE={N} LOOP=design`
 
 ## 3. Build Gate
 
@@ -29,6 +31,7 @@
 5. Run:
    - `make gate-build PHASE={N}`
    - `make verify-reviews PHASE={N} LOOP=build`
+   - `make verify-external PHASE={N} LOOP=build`
    - `make phase-report PHASE={N} LOOP=build`
 
 ## 4. Merge

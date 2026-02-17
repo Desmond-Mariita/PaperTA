@@ -1,0 +1,11 @@
+providers:
+  gemini:
+    output_id: REVIEW_EXTERNAL_1
+    # Example:
+    # command: "gemini --prompt-file {prompt_file}"
+    command: ""
+  claude:
+    output_id: REVIEW_EXTERNAL_2
+    # Example:
+    # command: "claude --print --file {prompt_file}"
+    command: ""

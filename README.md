@@ -32,6 +32,12 @@ Phase gate commands:
 make gate-design PHASE=1
 make gate-build PHASE=1
 make verify-reviews PHASE=1 LOOP=design
+make run-external PHASE=1 LOOP=design
+make verify-external PHASE=1 LOOP=design
 make verify-checklist PHASE=1
 make phase-report PHASE=1 LOOP=design
 ```
+
+External review tooling config:
+
+- `configs/reviews/external_review_tools.yaml`
