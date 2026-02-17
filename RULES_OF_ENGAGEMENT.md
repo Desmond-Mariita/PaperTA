@@ -1,86 +1,224 @@
 # PaperTA — Rules of Engagement
 
-**Version:** 1.0  
-**Status:** Authoritative  
-**Scope:** Architecture, implementation, internal/external review
+**Version:** 2.0  
+**Status:** AUTHORITATIVE  
+**For:** Architect + Coder + Review Workflow
 
-## 1. Two-Loop Workflow
+## Purpose
 
-PaperTA development runs in two loops per phase.
+Build PaperTA correctly the first time with explicit gates. No skipped steps. No silent deferrals.
 
-1. Loop 1 (Design)
-- Create ADR, runtime contract, acceptance checklist.
-- Run internal review.
-- Pause for external review.
-- Address feedback, freeze design artifacts.
+---
 
-2. Loop 2 (Build)
-- Implement only against frozen contract.
-- Add tests (unit + integration + negative).
-- Run internal review.
-- Pause for external review.
-- Address feedback, re-test, then merge.
+## 1. Two-Loop Workflow (Mandatory)
 
-## 2. Mandatory Artifacts Per Phase
+Each phase has two loops, in order:
+
+1. **Loop 1 (Design):** ADR + runtime contract + acceptance checklist + reviews + freeze
+2. **Loop 2 (Build):** implement against frozen contract + tests + reviews + merge gate
+
+You cannot start Loop 2 until Loop 1 is complete and frozen.
+
+---
+
+## 2. Phase Start Protocol
+
+When phase work begins, execute in this order:
+
+1. Create branch:
+   - `phase-{N}-loop-1-design` for design loop
+   - `phase-{N}-loop-2-build` for build loop
+2. Append phase start entry to `docs/JOURNAL.md`.
+3. Create phase artifact directories:
+   - `docs/reviews/phase{N}/design/`
+   - `docs/reviews/phase{N}/build/`
+
+---
+
+## 3. Loop 1 (Design) Protocol
+
+### 3.1 Required Design Artifacts
+
+Must create all:
 
 - `docs/adr/ADR-{NNN}-{topic}.md`
 - `docs/contracts/PHASE{N}_RUNTIME_CONTRACT.md`
 - `docs/checklists/PHASE{N}_ACCEPTANCE_CHECKLIST.yaml`
-- `docs/reviews/phase{N}/design/INTERNAL_REVIEW_{AGENT}.md`
-- `docs/reviews/phase{N}/design/INTERNAL_VERDICT.md`
-- `docs/reviews/phase{N}/design/REVIEW_EXTERNAL_1.md` (human-provided)
-- `docs/reviews/phase{N}/design/REVIEW_EXTERNAL_2.md` (human-provided)
-- `docs/reviews/phase{N}/build/INTERNAL_REVIEW_{AGENT}.md`
-- `docs/reviews/phase{N}/build/INTERNAL_VERDICT.md`
-- `docs/reviews/phase{N}/build/REVIEW_EXTERNAL_1.md` (human-provided)
-- `docs/reviews/phase{N}/build/REVIEW_EXTERNAL_2.md` (human-provided)
+
+### 3.2 Internal Design Review (Required)
+
+Run internal review with these agents:
+
+- `CONTRACT_AUDITOR`
+- `IMPLEMENTATION_REVIEWER`
+- `INVARIANT_GUARDIAN`
+- `CONSISTENCY_CHECKER`
+- `CHECKLIST_AUDITOR`
+
+Rules:
+
+- Max 5 rounds per agent.
+- Resolve all `CRITICAL` and `MAJOR` findings.
+- Save outputs:
+  - `docs/reviews/phase{N}/design/INTERNAL_REVIEW_{AGENT}.md`
+  - `docs/reviews/phase{N}/design/INTERNAL_VERDICT.md`
+
+### 3.3 External Design Review Stop Point
+
+After internal design review completion, stop and wait for human-provided external reviews:
+
+- `docs/reviews/phase{N}/design/REVIEW_EXTERNAL_1.md`
+- `docs/reviews/phase{N}/design/REVIEW_EXTERNAL_2.md`
+
+Do not fabricate external reviews.
+
+### 3.4 Design Freeze
+
+After external feedback is addressed:
+
+1. Freeze contract/checklist.
+2. Add freeze entry to `docs/JOURNAL.md`.
+3. Run gate checker:
+   - `python3 scripts/phase_gate.py --phase N --loop design`
+
+Loop 1 is complete only if gate passes.
+
+---
+
+## 4. Loop 2 (Build) Protocol
+
+### 4.1 Pre-Flight Reads (Required)
+
+Before coding:
+
+1. `RULES_OF_ENGAGEMENT.md`
+2. `docs/ROADMAP_SUMMARY.md`
+3. `docs/contracts/PHASE{N}_RUNTIME_CONTRACT.md`
+4. `docs/checklists/PHASE{N}_ACCEPTANCE_CHECKLIST.yaml`
+
+### 4.2 Implementation Requirements
+
+Implement only within frozen contract scope.
+
+### 4.3 Three-Test Rule (Mandatory)
+
+Each component must include all:
+
+1. Unit test
+2. Integration test
+3. Negative test
+
+Missing any one category means phase fails.
+
+### 4.4 Internal Build Review (Required)
+
+Run internal review with these agents:
+
+- `BUILD_AUDITOR`
+- `BUILD_REVIEWER`
+- `INVARIANT_GUARDIAN`
+- `CONSISTENCY_CHECKER`
+- `TEST_AUDITOR`
+
+Rules:
+
+- Max 5 rounds per agent.
+- Resolve all `CRITICAL`; resolve `MAJOR` or explicitly defer in verdict.
+- Save outputs:
+  - `docs/reviews/phase{N}/build/INTERNAL_REVIEW_{AGENT}.md`
+  - `docs/reviews/phase{N}/build/INTERNAL_VERDICT.md`
+
+### 4.5 External Build Review Stop Point
+
+Stop for human-provided external review files:
+
+- `docs/reviews/phase{N}/build/REVIEW_EXTERNAL_1.md`
+- `docs/reviews/phase{N}/build/REVIEW_EXTERNAL_2.md`
+
+Then produce:
+
 - `docs/reviews/phase{N}/build/VERDICT.md`
 
-## 3. Test Rule
+### 4.6 Merge Gate (Non-Skippable)
 
-Every implemented component must include all three:
+Before merge, all must pass:
 
-1. Unit tests (isolated logic)
-2. Integration tests (real wiring path)
-3. Negative tests (failure behavior)
+1. Local tests pass.
+2. Review findings resolved/deferred with rationale.
+3. Docs updated:
+   - `docs/JOURNAL.md`
+   - `docs/ROADMAP_SUMMARY.md`
+   - `docs/GIT.md`
+4. Gate checker passes:
+   - `python3 scripts/phase_gate.py --phase N --loop build`
 
-Missing any test category means phase is not complete.
+If gate fails, merge is blocked.
 
-## 4. Review Severity Policy
+---
 
-- CRITICAL: must fix before merge.
-- MAJOR: should fix before merge, document if deferred.
-- MINOR: optional fix.
-- NIT: optional.
+## 5. Required Files Per Loop
 
-All review decisions must be logged in `VERDICT.md` with quote, decision, and action.
+### Loop 1 (Design) must exist
 
-## 5. Required Documents to Maintain
+- ADR
+- runtime contract
+- acceptance checklist
+- all internal design review files
+- internal design verdict
+- both external design reviews
 
-- `docs/JOURNAL.md`: phase starts/ends, blockers, waivers, major decisions.
-- `docs/ROADMAP_SUMMARY.md`: phase outcomes, shipped components, next phase.
-- `docs/GIT.md`: branch, commits, merges, release tags.
+### Loop 2 (Build) must exist
 
-## 6. Freeze Rule
+- all internal build review files
+- internal build verdict
+- both external build reviews
+- final build verdict
 
-After Loop 1 external review completion, contract and checklist are frozen.
-Any contract change during Loop 2 requires:
+---
 
-1. ADR addendum
-2. checklist update
-3. review note in `docs/JOURNAL.md`
+## 6. Severity Policy
 
-## 7. Branching Convention
+- `CRITICAL`: must fix before loop completion.
+- `MAJOR`: should fix; deferral allowed only with explicit risk note in verdict.
+- `MINOR`: optional.
+- `NIT`: optional.
 
-- `phase-{N}-loop-1-design`
-- `phase-{N}-loop-2-build`
+---
 
-## 8. Definition of Phase Completion
+## 7. Verdict Format (Mandatory)
 
-A phase is complete only if all are true:
+Every external/internal finding addressed in `VERDICT.md` uses:
 
-1. Design and build loops completed.
-2. Required docs exist and are updated.
-3. Tests pass locally.
-4. External review findings resolved or formally deferred.
-5. Merged to `main` and recorded in `docs/GIT.md`.
+```markdown
+### Feedback: <short title>
+Reviewer: <source>
+Severity: CRITICAL | MAJOR | MINOR | NIT
+Quote: "<exact quote>"
+Decision: ACCEPT | DEFER | REJECT
+Reasoning: <brief rationale>
+Action Taken: <commit/file/test change or none>
+```
+
+---
+
+## 8. No-Skip Enforcement
+
+Enforcement mechanisms:
+
+1. Human process gate in this document.
+2. Mechanical gate: `scripts/phase_gate.py`.
+3. Optional CI gate: run `phase_gate.py` in pull-request checks.
+
+If any required artifact is missing or empty, gate fails.
+
+---
+
+## 9. Definition of Phase Completion
+
+A phase is complete only when:
+
+1. Loop 1 and Loop 2 gates pass.
+2. Required review artifacts exist.
+3. Required tests exist and pass.
+4. Journal/roadmap/git logs are updated.
+5. Branch merged and pushed to `main`.

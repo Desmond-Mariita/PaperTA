@@ -22,3 +22,16 @@ Use the cross-OS setup in `LOCAL_DEV_SETUP.md`.
 - `docs/ROADMAP_SUMMARY.md`
 - `docs/JOURNAL.md`
 - `docs/GIT.md`
+- `docs/INTERNAL_REVIEW_AGENTS.md`
+
+## Quality Gates
+
+Phase gate commands:
+
+```bash
+make gate-design PHASE=1
+make gate-build PHASE=1
+make verify-reviews PHASE=1 LOOP=design
+make verify-checklist PHASE=1
+make phase-report PHASE=1 LOOP=design
+```

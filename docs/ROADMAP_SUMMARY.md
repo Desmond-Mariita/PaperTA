@@ -9,6 +9,12 @@
 - System design baseline (`PaperTA_System_Design_v0.3.md`)
 - Local cross-OS container setup (`docker-compose.yml`, `.env.example`, `LOCAL_DEV_SETUP.md`)
 - Rules of engagement and documentation templates
+- CI/policing scaffolding:
+  - `scripts/verify_internal_reviews.py`
+  - `scripts/verify_checklist.py`
+  - `scripts/generate_phase_report.py`
+  - `.github/workflows/ci.yml`
+  - `.github/workflows/phase-gate.yml`
 
 ## Next Phase
 
