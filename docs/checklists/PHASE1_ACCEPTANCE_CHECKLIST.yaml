@@ -100,6 +100,13 @@ items:
       test_pattern: tests/unit/test_summary.py
       test_name: test_summary_bullets_include_citations
 
+  - id: T-SUMMARY-UNIT-002
+    requirement: "Summary enforces invariant 3 for unknown chunk IDs"
+    evidence:
+      type: test_exists
+      test_pattern: tests/unit/test_summary.py
+      test_name: test_summary_rejects_unknown_chunk_ids
+
   - id: T-SUMMARY-INT-001
     requirement: "Summary integration test exists"
     evidence:

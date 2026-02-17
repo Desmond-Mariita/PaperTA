@@ -50,6 +50,7 @@ Phase 1 delivers deterministic ingestion and grounded summary generation for a s
 1. Pipeline result includes:
 - `paper_id`
 - `mode`
+- `retrieval_trace`
 - `retrieved_chunk_ids`
 - `summary_bullet_count`
 - `unsupported_bullet_count`

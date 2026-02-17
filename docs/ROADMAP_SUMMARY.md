@@ -2,7 +2,7 @@
 
 ## Current Phase
 
-- Phase 0: Foundation and governance setup (in progress)
+- Phase 1: Ingestion + grounded summaries (completed)
 
 ## Completed
 
@@ -15,7 +15,26 @@
   - `scripts/generate_phase_report.py`
   - `.github/workflows/ci.yml`
   - `.github/workflows/phase-gate.yml`
+- Phase 1 Loop 1 and Loop 2 delivered:
+  - Design artifacts:
+    - `docs/adr/ADR-001-phase1-ingestion-grounded-summary.md`
+    - `docs/contracts/PHASE1_RUNTIME_CONTRACT.md`
+    - `docs/checklists/PHASE1_ACCEPTANCE_CHECKLIST.yaml`
+  - Runtime implementation:
+    - `src/paperta/contracts.py`
+    - `src/paperta/ingestion.py`
+    - `src/paperta/retrieval.py`
+    - `src/paperta/summary.py`
+    - `src/paperta/pipeline.py`
+  - Test matrix:
+    - unit: `tests/unit/*`
+    - integration: `tests/integration/test_phase1_pipeline.py`
+    - negative: `tests/negative/*`
+  - Gate status:
+    - phase gate: PASS
+    - checklist: PASS (24/24)
+    - pytest: PASS (13 passed)
 
 ## Next Phase
 
-- Phase 1 Loop 1 (Design): Ingestion + grounded summaries runtime contract and acceptance checklist
+- Phase 2 Loop 1 (Design): Teach Mode runtime contract, concept-map pipeline, and Socratic workspace boundaries
