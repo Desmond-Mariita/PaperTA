@@ -2,7 +2,7 @@
 
 ## Current Phase
 
-- Phase 1: Ingestion + grounded summaries (completed)
+- Phase 4: Multi-paper intelligence (completed)
 
 ## Completed
 
@@ -34,7 +34,58 @@
     - phase gate: PASS
     - checklist: PASS (24/24)
     - pytest: PASS (13 passed)
+- Phase 2 Loop 1 and Loop 2 delivered:
+  - Design artifacts:
+    - `docs/adr/ADR-002-phase2-teach-mode-core.md`
+    - `docs/contracts/PHASE2_RUNTIME_CONTRACT.md`
+    - `docs/checklists/PHASE2_ACCEPTANCE_CHECKLIST.yaml`
+  - Runtime implementation:
+    - `src/paperta/teach_contracts.py`
+    - `src/paperta/teach.py`
+    - `src/paperta/pipeline.py` (Phase 2 wrapper)
+  - Test matrix:
+    - unit: `tests/unit/test_teach.py`
+    - integration: `tests/integration/test_phase2_teach_pipeline.py`
+    - negative: `tests/negative/test_phase2_teach_negative.py`
+  - Gate status:
+    - phase gate: PASS (design + build)
+    - checklist: PASS (10/10)
+    - pytest: PASS (23 passed)
+- Phase 3 Loop 1 and Loop 2 delivered:
+  - Design artifacts:
+    - `docs/adr/ADR-003-phase3-reviewer-mode-verification.md`
+    - `docs/contracts/PHASE3_RUNTIME_CONTRACT.md`
+    - `docs/checklists/PHASE3_ACCEPTANCE_CHECKLIST.yaml`
+  - Runtime implementation:
+    - `src/paperta/reviewer_contracts.py`
+    - `src/paperta/reviewer.py`
+    - `src/paperta/pipeline.py` (Phase 3 wrapper)
+  - Test matrix:
+    - unit: `tests/unit/test_reviewer.py`
+    - integration: `tests/integration/test_phase3_reviewer_pipeline.py`
+    - negative: `tests/negative/test_phase3_reviewer_negative.py`
+  - Gate status:
+    - phase gate: PASS (design + build)
+    - checklist: PASS (13/13)
+    - pytest: PASS
+- Phase 4 Loop 1 and Loop 2 delivered:
+  - Design artifacts:
+    - `docs/adr/ADR-004-phase4-multi-paper-intelligence.md`
+    - `docs/contracts/PHASE4_RUNTIME_CONTRACT.md`
+    - `docs/checklists/PHASE4_ACCEPTANCE_CHECKLIST.yaml`
+  - Runtime implementation:
+    - `src/paperta/multi_paper_contracts.py`
+    - `src/paperta/multi_paper.py`
+    - `src/paperta/pipeline.py` (Phase 4 wrapper)
+  - Test matrix:
+    - unit: `tests/unit/test_multi_paper.py`
+    - integration: `tests/integration/test_phase4_multi_paper_pipeline.py`
+    - negative: `tests/negative/test_phase4_multi_paper_negative.py`
+  - Gate status:
+    - phase gate: PASS (design + build)
+    - checklist: PASS (13/13)
+    - pytest: PASS (40 passed)
 
 ## Next Phase
 
-- Phase 2 Loop 1 (Design): Teach Mode runtime contract, concept-map pipeline, and Socratic workspace boundaries
+- Post-phase hardening and merge to `main`

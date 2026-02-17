@@ -1,0 +1,89 @@
+version: "1.0"
+phase: 3
+
+items:
+  - id: D3-001
+    requirement: "Phase 3 ADR exists"
+    evidence:
+      type: file_exists
+      path: docs/adr/ADR-003-phase3-reviewer-mode-verification.md
+
+  - id: D3-002
+    requirement: "Phase 3 runtime contract exists"
+    evidence:
+      type: file_exists
+      path: docs/contracts/PHASE3_RUNTIME_CONTRACT.md
+
+  - id: D3-003
+    requirement: "Phase 3 acceptance checklist exists"
+    evidence:
+      type: file_exists
+      path: docs/checklists/PHASE3_ACCEPTANCE_CHECKLIST.yaml
+
+  - id: C3-001
+    requirement: "Reviewer mode module exists"
+    evidence:
+      type: file_exists
+      path: src/paperta/reviewer.py
+
+  - id: C3-002
+    requirement: "Reviewer contracts module exists"
+    evidence:
+      type: file_exists
+      path: src/paperta/reviewer_contracts.py
+
+  - id: T3-UNIT-001
+    requirement: "Claim matrix unit test exists"
+    evidence:
+      type: test_exists
+      test_pattern: tests/unit/test_reviewer.py
+      test_name: test_generate_claim_matrix_has_valid_support_grades
+
+  - id: T3-UNIT-002
+    requirement: "Reproducibility checklist unit test exists"
+    evidence:
+      type: test_exists
+      test_pattern: tests/unit/test_reviewer.py
+      test_name: test_generate_reproducibility_checklist_with_citations
+
+  - id: T3-UNIT-003
+    requirement: "Critique generation unit test exists"
+    evidence:
+      type: test_exists
+      test_pattern: tests/unit/test_reviewer.py
+      test_name: test_generate_critique_handles_evidence_and_fallback
+
+  - id: T3-INT-001
+    requirement: "Reviewer pipeline integration test exists"
+    evidence:
+      type: test_exists
+      test_pattern: tests/integration/test_phase3_reviewer_pipeline.py
+      test_name: test_phase3_pipeline_returns_grounded_reviewer_artifact
+
+  - id: T3-NEG-001
+    requirement: "Reviewer pipeline invalid query negative test exists"
+    evidence:
+      type: test_exists
+      test_pattern: tests/negative/test_phase3_reviewer_negative.py
+      test_name: test_phase3_pipeline_rejects_empty_review_query
+
+  - id: T3-NEG-002
+    requirement: "Reviewer fallback negative test exists"
+    evidence:
+      type: test_exists
+      test_pattern: tests/negative/test_phase3_reviewer_negative.py
+      test_name: test_claim_matrix_returns_not_stated_when_no_evidence
+
+  - id: F3-001
+    requirement: "Failure mode: top_k <= 0 raises ValueError"
+    evidence:
+      type: test_exists
+      test_pattern: tests/negative/test_phase3_reviewer_negative.py
+      test_name: test_phase3_pipeline_rejects_non_positive_top_k
+
+  - id: F3-002
+    requirement: "Failure mode: invalid mode raises ValueError"
+    evidence:
+      type: test_exists
+      test_pattern: tests/negative/test_phase3_reviewer_negative.py
+      test_name: test_phase3_pipeline_rejects_invalid_mode
