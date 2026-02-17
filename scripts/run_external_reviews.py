@@ -28,8 +28,12 @@ def _utc_iso() -> str:
     return dt.datetime.now(tz=dt.timezone.utc).isoformat(timespec="seconds")
 
 
-def _render_cmd(template: str, prompt_file: Path, context_file: Path) -> list[str]:
-    rendered = template.format(prompt_file=str(prompt_file), context_file=str(context_file))
+def _render_cmd(template: str, prompt_file: Path, context_file: Path, prompt_text: str) -> list[str]:
+    rendered = template.format(
+        prompt_file=str(prompt_file),
+        context_file=str(context_file),
+        prompt_text=prompt_text,
+    )
     return shlex.split(rendered)
 
 
@@ -37,17 +41,26 @@ def _run_provider(
     provider_name: str,
     output_id: str,
     command_template: str,
+    input_mode: str,
     prompt_file: Path,
     context_file: Path,
+    prompt_text: str,
     output_dir: Path,
 ) -> None:
-    cmd = _render_cmd(command_template, prompt_file, context_file)
+    cmd = _render_cmd(command_template, prompt_file, context_file, prompt_text)
     if not cmd:
         raise ValueError(f"Provider {provider_name} has empty command after rendering")
 
     started = _utc_iso()
     t0 = perf_counter()
-    proc = subprocess.run(cmd, capture_output=True, text=True, check=False)
+    run_kwargs: dict[str, object] = {"capture_output": True, "text": True, "check": False}
+    if input_mode == "stdin":
+        run_kwargs["input"] = prompt_text
+    elif input_mode != "arg":
+        raise ValueError(
+            f"Provider {provider_name} has unsupported input_mode '{input_mode}'. Use 'stdin' or 'arg'."
+        )
+    proc = subprocess.run(cmd, **run_kwargs)
     duration_ms = int((perf_counter() - t0) * 1000)
     ended = _utc_iso()
 
@@ -72,6 +85,7 @@ def _run_provider(
         "ended_at_utc": ended,
         "duration_ms": duration_ms,
         "command_argv": cmd,
+        "input_mode": input_mode,
         "exit_code": proc.returncode,
         "stdout_sha256": _sha256_bytes(raw_out.encode("utf-8")),
         "stderr_sha256": _sha256_bytes(raw_err.encode("utf-8")),
@@ -86,6 +100,7 @@ def _run_provider(
         "",
         f"- Generated at: {ended}",
         f"- Command: `{' '.join(cmd)}`",
+        f"- Input mode: `{input_mode}`",
         f"- Exit code: {proc.returncode}",
         f"- Raw file: `{raw_path.name}`",
         f"- Raw SHA256: `{raw_hash}`",
@@ -154,13 +169,23 @@ def main() -> None:
     for provider, default_output in required:
         entry = providers.get(provider, {})
         command = str(entry.get("command", "")).strip()
+        input_mode = str(entry.get("input_mode", "arg")).strip().lower()
         output_id = str(entry.get("output_id", default_output)).strip() or default_output
         if not command:
             raise SystemExit(
                 f"Missing command for provider '{provider}' in {args.tools_config}. "
                 "Set providers.<name>.command first."
             )
-        _run_provider(provider, output_id, command, prompt_file, args.context_file, phase_dir)
+        _run_provider(
+            provider,
+            output_id,
+            command,
+            input_mode,
+            prompt_file,
+            args.context_file,
+            resolved_prompt,
+            phase_dir,
+        )
 
     print(f"External reviews completed for phase={args.phase} loop={args.loop}")
 

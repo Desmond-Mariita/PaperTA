@@ -23,16 +23,24 @@ Edit `configs/reviews/external_review_tools.yaml`:
 providers:
   gemini:
     output_id: REVIEW_EXTERNAL_1
-    command: "gemini --prompt-file {prompt_file}"
+    command: "gemini --output-format json"
+    input_mode: "stdin"
   claude:
     output_id: REVIEW_EXTERNAL_2
-    command: "claude --print --file {prompt_file}"
+    command: "claude -p {prompt_text} --output-format json"
+    input_mode: "arg"
 ```
 
 Supported placeholders:
 
 - `{prompt_file}`
 - `{context_file}`
+- `{prompt_text}`
+
+Input modes:
+
+- `stdin`: send resolved prompt via standard input (used for Gemini default)
+- `arg`: inject prompt via `{prompt_text}` in command string (used for Claude default)
 
 ## Run
 

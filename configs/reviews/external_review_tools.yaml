@@ -1,11 +1,11 @@
 providers:
   gemini:
     output_id: REVIEW_EXTERNAL_1
-    # Example:
-    # command: "gemini --prompt-file {prompt_file}"
-    command: ""
+    # Gemini headless docs: use --prompt/-p or stdin, and --output-format json.
+    command: "gemini --output-format json"
+    input_mode: "stdin"
   claude:
     output_id: REVIEW_EXTERNAL_2
-    # Example:
-    # command: "claude --print --file {prompt_file}"
-    command: ""
+    # Claude headless docs: use -p/--print and --output-format json.
+    command: "claude -p {prompt_text} --output-format json"
+    input_mode: "arg"
