@@ -157,11 +157,14 @@ def main() -> None:
     phase_dir.mkdir(parents=True, exist_ok=True)
     prompt_file = phase_dir / "EXTERNAL_REVIEW_PROMPT_RESOLVED.md"
 
+    context_text = args.context_file.read_text(encoding="utf-8")
     resolved_prompt = (
         args.prompt_template.read_text(encoding="utf-8")
         + "\n\n## Context File\n\n"
         + str(args.context_file)
-        + "\n"
+        + "\n\n## Context Content\n\n```text\n"
+        + context_text
+        + "\n```\n"
     )
     prompt_file.write_text(resolved_prompt, encoding="utf-8")
 
