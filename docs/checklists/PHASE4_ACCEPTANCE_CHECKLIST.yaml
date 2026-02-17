@@ -1,0 +1,89 @@
+version: "1.0"
+phase: 4
+
+items:
+  - id: D4-001
+    requirement: "Phase 4 ADR exists"
+    evidence:
+      type: file_exists
+      path: docs/adr/ADR-004-phase4-multi-paper-intelligence.md
+
+  - id: D4-002
+    requirement: "Phase 4 runtime contract exists"
+    evidence:
+      type: file_exists
+      path: docs/contracts/PHASE4_RUNTIME_CONTRACT.md
+
+  - id: D4-003
+    requirement: "Phase 4 acceptance checklist exists"
+    evidence:
+      type: file_exists
+      path: docs/checklists/PHASE4_ACCEPTANCE_CHECKLIST.yaml
+
+  - id: C4-001
+    requirement: "Multi-paper module exists"
+    evidence:
+      type: file_exists
+      path: src/paperta/multi_paper.py
+
+  - id: C4-002
+    requirement: "Multi-paper contracts module exists"
+    evidence:
+      type: file_exists
+      path: src/paperta/multi_paper_contracts.py
+
+  - id: T4-UNIT-001
+    requirement: "Concept linker unit test exists"
+    evidence:
+      type: test_exists
+      test_pattern: tests/unit/test_multi_paper.py
+      test_name: test_link_concepts_assigns_canonical_ids
+
+  - id: T4-UNIT-002
+    requirement: "Consensus matrix unit test exists"
+    evidence:
+      type: test_exists
+      test_pattern: tests/unit/test_multi_paper.py
+      test_name: test_build_consensus_matrix_has_valid_labels
+
+  - id: T4-UNIT-003
+    requirement: "Cross-paper graph unit test exists"
+    evidence:
+      type: test_exists
+      test_pattern: tests/unit/test_multi_paper.py
+      test_name: test_build_cross_paper_graph_emits_expected_edges
+
+  - id: T4-INT-001
+    requirement: "Multi-paper pipeline integration test exists"
+    evidence:
+      type: test_exists
+      test_pattern: tests/integration/test_phase4_multi_paper_pipeline.py
+      test_name: test_phase4_pipeline_returns_grounded_multi_paper_artifact
+
+  - id: T4-NEG-001
+    requirement: "Multi-paper invalid paper set negative test exists"
+    evidence:
+      type: test_exists
+      test_pattern: tests/negative/test_phase4_multi_paper_negative.py
+      test_name: test_phase4_pipeline_rejects_empty_paper_set
+
+  - id: T4-NEG-002
+    requirement: "Multi-paper fallback negative test exists"
+    evidence:
+      type: test_exists
+      test_pattern: tests/negative/test_phase4_multi_paper_negative.py
+      test_name: test_consensus_returns_insufficient_when_no_evidence
+
+  - id: F4-001
+    requirement: "Failure mode: empty query raises ValueError"
+    evidence:
+      type: test_exists
+      test_pattern: tests/negative/test_phase4_multi_paper_negative.py
+      test_name: test_phase4_pipeline_rejects_empty_query
+
+  - id: F4-002
+    requirement: "Failure mode: top_k <= 0 raises ValueError"
+    evidence:
+      type: test_exists
+      test_pattern: tests/negative/test_phase4_multi_paper_negative.py
+      test_name: test_phase4_pipeline_rejects_non_positive_top_k

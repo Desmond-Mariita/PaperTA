@@ -1,0 +1,68 @@
+version: "1.0"
+phase: 2
+
+items:
+  - id: D2-001
+    requirement: "Phase 2 ADR exists"
+    evidence:
+      type: file_exists
+      path: docs/adr/ADR-002-phase2-teach-mode-core.md
+
+  - id: D2-002
+    requirement: "Phase 2 runtime contract exists"
+    evidence:
+      type: file_exists
+      path: docs/contracts/PHASE2_RUNTIME_CONTRACT.md
+
+  - id: D2-003
+    requirement: "Phase 2 acceptance checklist exists"
+    evidence:
+      type: file_exists
+      path: docs/checklists/PHASE2_ACCEPTANCE_CHECKLIST.yaml
+
+  - id: C2-001
+    requirement: "Teach mode module exists"
+    evidence:
+      type: file_exists
+      path: src/paperta/teach.py
+
+  - id: C2-002
+    requirement: "Teach contracts module exists"
+    evidence:
+      type: file_exists
+      path: src/paperta/teach_contracts.py
+
+  - id: T2-UNIT-001
+    requirement: "Prerequisite generation unit test exists"
+    evidence:
+      type: test_exists
+      test_pattern: tests/unit/test_teach.py
+      test_name: test_generate_prerequisites_with_citations
+
+  - id: T2-UNIT-002
+    requirement: "Concept map unit test exists"
+    evidence:
+      type: test_exists
+      test_pattern: tests/unit/test_teach.py
+      test_name: test_generate_concept_map_links_nodes
+
+  - id: T2-INT-001
+    requirement: "Teach pipeline integration test exists"
+    evidence:
+      type: test_exists
+      test_pattern: tests/integration/test_phase2_teach_pipeline.py
+      test_name: test_phase2_pipeline_returns_grounded_teach_artifact
+
+  - id: T2-NEG-001
+    requirement: "Teach pipeline invalid objective negative test exists"
+    evidence:
+      type: test_exists
+      test_pattern: tests/negative/test_phase2_teach_negative.py
+      test_name: test_phase2_pipeline_rejects_empty_objective
+
+  - id: T2-NEG-002
+    requirement: "Socratic fallback negative test exists"
+    evidence:
+      type: test_exists
+      test_pattern: tests/negative/test_phase2_teach_negative.py
+      test_name: test_socratic_returns_not_stated_when_unsupported

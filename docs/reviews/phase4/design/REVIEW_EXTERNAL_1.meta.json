@@ -1,0 +1,19 @@
+{
+  "provider": "gemini",
+  "output_id": "REVIEW_EXTERNAL_1",
+  "started_at_utc": "2026-02-17T10:41:16+00:00",
+  "ended_at_utc": "2026-02-17T10:41:56+00:00",
+  "duration_ms": 40386,
+  "command_argv": [
+    "gemini",
+    "--output-format",
+    "json"
+  ],
+  "input_mode": "stdin",
+  "exit_code": 0,
+  "stdout_sha256": "3a7cdb54c84a1efb14e48b027050c93e968ea141e938db0b278b356c66aed2b5",
+  "stderr_sha256": "65056a93a15c4461ff017b111ba820be464b6068a9b3838f7d390cdb3e6f4257",
+  "raw_file_sha256": "3a7cdb54c84a1efb14e48b027050c93e968ea141e938db0b278b356c66aed2b5",
+  "prompt_file": "docs/reviews/phase4/design/EXTERNAL_REVIEW_PROMPT_RESOLVED.md",
+  "context_file": "docs/reviews/phase4/design/EXTERNAL_REVIEW_CONTEXT_INLINE.md"
+}
