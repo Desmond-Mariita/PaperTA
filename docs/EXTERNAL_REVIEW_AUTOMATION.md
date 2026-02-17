@@ -27,7 +27,7 @@ providers:
     input_mode: "stdin"
   claude:
     output_id: REVIEW_EXTERNAL_2
-    command: "claude -p {prompt_text} --output-format json"
+    command: "claude -p \"{prompt_text}\" --output-format json"
     input_mode: "arg"
 ```
 

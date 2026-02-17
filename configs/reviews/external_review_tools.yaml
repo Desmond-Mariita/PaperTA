@@ -7,5 +7,5 @@ providers:
   claude:
     output_id: REVIEW_EXTERNAL_2
     # Claude headless docs: use -p/--print and --output-format json.
-    command: "claude -p {prompt_text} --output-format json"
+    command: "claude -p \"{prompt_text}\" --output-format json"
     input_mode: "arg"
